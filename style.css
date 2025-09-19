@@ -219,6 +219,9 @@ body {
 
 .result-content {
     margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .mood-indicator {
@@ -243,6 +246,117 @@ body {
     font-size: 0.9rem;
     color: #666;
     font-style: italic;
+    margin-bottom: 30px;
+}
+
+/* 解释和应用区域 */
+.explanation-section,
+.application-section {
+    text-align: left;
+    margin: 30px 0;
+    padding: 25px;
+    background: #fafafa;
+    border-radius: 8px;
+    border-left: 4px solid #8b4513;
+    animation: slideUp 0.6s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #8b4513;
+}
+
+.section-icon {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #8b4513;
+}
+
+.explanation-content,
+.application-content {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #333;
+    text-align: justify;
+}
+
+/* 进度指示器 */
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 20px 0;
+    gap: 20px;
+}
+
+.progress-step {
+    padding: 8px 16px;
+    background: #e0e0e0;
+    color: #999;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.progress-step.active {
+    background: #8b4513;
+    color: white;
+}
+
+.progress-step.completed {
+    background: #a0522d;
+    color: white;
+}
+
+.progress-step::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    width: 20px;
+    height: 2px;
+    background: #e0e0e0;
+    transform: translateY(-50%);
+}
+
+.progress-step:last-child::after {
+    display: none;
+}
+
+.progress-step.active::after,
+.progress-step.completed::after {
+    background: #8b4513;
+}
+
+/* 可点击提示 */
+.click-hint {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background: #e8f4f8;
+    color: #666;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
 }
 
 .reset-btn {
@@ -321,6 +435,30 @@ body {
         width: 60px;
         height: 35px;
     }
+
+    .result-content {
+        max-width: 100%;
+    }
+
+    .explanation-section,
+    .application-section {
+        margin: 20px 0;
+        padding: 20px;
+    }
+
+    .progress-indicator {
+        gap: 15px;
+    }
+
+    .progress-step {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .progress-step::after {
+        right: -15px;
+        width: 15px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -339,6 +477,41 @@ body {
 
     .fortune-text {
         font-size: 1.1rem;
+    }
+
+    .result-section {
+        padding: 30px 15px;
+    }
+
+    .explanation-section,
+    .application-section {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .section-header {
+        margin-bottom: 10px;
+    }
+
+    .explanation-content,
+    .application-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .progress-indicator {
+        gap: 10px;
+        margin: 20px 0 15px 0;
+    }
+
+    .progress-step {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .progress-step::after {
+        right: -10px;
+        width: 10px;
     }
 }
 
