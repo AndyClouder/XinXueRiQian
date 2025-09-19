@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阳明心学抽签</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">阳明心学抽签</h1>
+            <p class="subtitle">静心择一签，得悟心学真言</p>
+        </header>
+
+        <main class="main">
+            <section class="mood-section">
+                <h2 class="section-title">选择你的心境</h2>
+                <div class="mood-buttons">
+                    <button class="mood-btn" data-mood="平静">平静</button>
+                    <button class="mood-btn" data-mood="焦虑">焦虑</button>
+                    <button class="mood-btn" data-mood="迷茫">迷茫</button>
+                    <button class="mood-btn" data-mood="欢喜">欢喜</button>
+                    <button class="mood-btn" data-mood="困惑">困惑</button>
+                    <button class="mood-btn" data-mood="坚定">坚定</button>
+                </div>
+            </section>
+
+            <section class="draw-section">
+                <div class="draw-area" id="drawArea">
+                    <div class="fortune-teller">
+                        <div class="stick-container">
+                            <div class="stick" id="stick"></div>
+                        </div>
+                        <div class="cylinder">
+                            <div class="cylinder-top"></div>
+                            <div class="cylinder-body"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="draw-btn" id="drawBtn" disabled>请先选择心境</button>
+            </section>
+
+            <section class="result-section" id="resultSection" style="display: none;">
+                <div class="result-content">
+                    <div class="mood-indicator" id="moodIndicator"></div>
+                    <div class="fortune-text" id="fortuneText"></div>
+                    <div class="fortune-source" id="fortuneSource"></div>
+                </div>
+                <button class="reset-btn" id="resetBtn">再抽一签</button>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>致良知 · 知行合一 · 格物致知</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
