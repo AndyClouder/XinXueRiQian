@@ -1,32 +1,38 @@
-/* 心学日签设计系统 */
+/* 心学日签 - 中国现代古风设计系统 */
 :root {
-    /* 品牌色彩系统 */
-    --zen-primary: #8b4513;
-    --zen-primary-light: #a0522d;
-    --zen-primary-dark: #654321;
-    --zen-secondary: #d2691e;
-    --zen-accent: #cd853f;
+    /* 主色调系统 - 现代中国风 */
+    --zen-primary: #2C3E50;        /* 墨黑蓝 - 现代感 */
+    --zen-primary-light: #34495E;  /* 墨黑蓝浅 */
+    --zen-primary-dark: #1A252F;   /* 墨黑蓝深 */
+    --zen-accent: #E74C3C;          /* 朱砂红 - 点缀色 */
+    --zen-accent-light: #EC7063;    /* 朱砂红浅 */
+    --zen-gold: #F39C12;             /* 金箔色 - 奢华感 */
+    --zen-gold-light: #F7DC6F;      /* 金箔色浅 */
+    --zen-sage: #27AE60;             /* 青绿色 - 自然感 */
+    --zen-jade: #16A085;             /* 翡翠色 - 清新感 */
+    --zen-jade-light: #48C9B0;       /* 翡翠色浅 */
 
-    /* 心境专属渐变色 */
-    --mood-calm: linear-gradient(135deg, #4a90e2, #7cb342);
-    --mood-anxious: linear-gradient(135deg, #ff7043, #ffb74d);
-    --mood-confused: linear-gradient(135deg, #7e57c2, #42a5f5);
-    --mood-happy: linear-gradient(135deg, #66bb6a, #26c6da);
-    --mood-perplexed: linear-gradient(135deg, #8d6e63, #bcaaa4);
-    --mood-determined: linear-gradient(135deg, #ef5350, #ff7043);
+    /* 心境专属渐变色 - 新中式配色 */
+    --mood-calm: linear-gradient(135deg, var(--zen-jade), var(--zen-sage));
+    --mood-anxious: linear-gradient(135deg, var(--zen-accent), var(--zen-gold));
+    --mood-confused: linear-gradient(135deg, #8E44AD, #9B59B6);
+    --mood-happy: linear-gradient(135deg, var(--zen-gold), #F1C40F);
+    --mood-perplexed: linear-gradient(135deg, #7F8C8D, #95A5A6);
+    --mood-determined: linear-gradient(135deg, var(--zen-accent), #C0392B);
 
-    /* 中性色彩 */
-    --zen-surface: #fafafa;
-    --zen-background: #f8f8f8;
-    --zen-text-primary: #1a1a1a;
-    --zen-text-secondary: #666;
-    --zen-text-tertiary: #999;
-    --zen-divider: #e0e0e0;
+    /* 中性色彩 - 现代简约 */
+    --zen-surface: rgba(255, 255, 255, 0.95);
+    --zen-background: #FAFAFA;
+    --zen-text-primary: #2C3E50;
+    --zen-text-secondary: #5D6D7E;
+    --zen-text-tertiary: #85929E;
+    --zen-divider: rgba(44, 62, 80, 0.1);
 
-    /* 阴影系统 */
-    --zen-shadow-sm: 0 2px 8px rgba(139, 69, 19, 0.1);
-    --zen-shadow-md: 0 8px 32px rgba(139, 69, 19, 0.15);
-    --zen-shadow-lg: 0 16px 64px rgba(139, 69, 19, 0.2);
+    /* 现代阴影系统 */
+    --zen-shadow-sm: 0 2px 8px rgba(44, 62, 80, 0.08);
+    --zen-shadow-md: 0 8px 32px rgba(44, 62, 80, 0.12);
+    --zen-shadow-lg: 0 16px 64px rgba(44, 62, 80, 0.16);
+    --zen-shadow-xl: 0 24px 96px rgba(44, 62, 80, 0.20);
 
     /* 间距系统 */
     --zen-spacing-xs: 4px;
@@ -35,21 +41,25 @@
     --zen-spacing-lg: 24px;
     --zen-spacing-xl: 32px;
     --zen-spacing-xxl: 48px;
+    --zen-spacing-xxxl: 64px;
 
-    /* 动画时长 */
-    --zen-duration-quick: 150ms;
-    --zen-duration-normal: 300ms;
-    --zen-duration-slow: 500ms;
+    /* 动画时长 - 更流畅 */
+    --zen-duration-quick: 200ms;
+    --zen-duration-normal: 400ms;
+    --zen-duration-slow: 600ms;
+    --zen-duration-extra-slow: 800ms;
 
-    /* 字体系统 */
-    --zen-font-primary: '宋体', 'SimSun', serif;
-    --zen-font-secondary: '楷体', 'KaiTi', serif;
+    /* 字体系统 - 新中式字体 */
+    --zen-font-primary: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    --zen-font-secondary: 'STKaiti', 'KaiTi', '楷体', serif;
     --zen-font-mono: 'Consolas', 'Monaco', monospace;
+    --zen-font-decorative: 'Ma Shan Zheng', 'ZCOOL XiaoWei', serif;
 
-    /* 圆角 */
-    --zen-radius-sm: 4px;
-    --zen-radius-md: 8px;
-    --zen-radius-lg: 16px;
+    /* 圆角 - 更现代 */
+    --zen-radius-sm: 6px;
+    --zen-radius-md: 12px;
+    --zen-radius-lg: 20px;
+    --zen-radius-xl: 24px;
     --zen-radius-full: 50%;
 }
 
@@ -67,9 +77,10 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+    min-height: 100vh;
 }
 
-/* 品牌背景装饰 */
+/* 现代宣纸质感背景 */
 body::before {
     content: '';
     position: fixed;
@@ -78,28 +89,47 @@ body::before {
     width: 100%;
     height: 100%;
     background:
-        radial-gradient(circle at 20% 20%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="90" font-family="serif" font-size="80" fill="rgba(139, 69, 19, 0.02)">心</text></svg>');
+        /* 宣纸基底 */
+        linear-gradient(45deg, #FAFAFA 0%, #F5F5F5 50%, #EFEFEF 100%),
+        /* 细微纹理 */
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(44, 62, 80, 0.01) 35px, rgba(44, 62, 80, 0.01) 70px),
+        repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(231, 76, 60, 0.005) 35px, rgba(231, 76, 60, 0.005) 70px);
+    pointer-events: none;
+    z-index: -2;
+}
+
+/* 水墨晕染效果 */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 15% 15%, rgba(231, 76, 60, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 85% 85%, rgba(44, 62, 80, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 45% 75%, rgba(22, 160, 133, 0.03) 0%, transparent 40%);
     pointer-events: none;
     z-index: -1;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    padding: var(--zen-spacing-xl);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
-/* 头部样式 */
+/* 头部样式 - 现代中式设计 */
 .header {
     text-align: center;
-    padding: var(--zen-spacing-xl) 0;
-    border-bottom: 1px solid var(--zen-divider);
-    margin-bottom: var(--zen-spacing-xl);
+    padding: var(--zen-spacing-xxl) 0 var(--zen-spacing-xl) 0;
+    margin-bottom: var(--zen-spacing-xxl);
     position: relative;
 }
 
@@ -107,7 +137,7 @@ body::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--zen-spacing-md);
+    gap: var(--zen-spacing-lg);
 }
 
 .logo {
@@ -116,52 +146,69 @@ body::before {
     justify-content: center;
     gap: var(--zen-spacing-md);
     position: relative;
+    padding: var(--zen-spacing-lg);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--zen-radius-xl);
+    box-shadow: var(--zen-shadow-lg);
+    border: 1px solid var(--zen-divider);
 }
 
 .logo-icon {
-    font-size: 3rem;
-    background: var(--mood-calm);
+    font-size: 3.5rem;
+    background: var(--zen-gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: bold;
     position: relative;
-    animation: logoFloat 3s ease-in-out infinite;
+    animation: logoFloat 4s ease-in-out infinite;
+    text-shadow: 0 2px 8px rgba(44, 62, 80, 0.1);
 }
 
 .logo-text {
-    font-size: 2.5rem;
-    font-weight: normal;
-    color: var(--zen-text-primary);
-    letter-spacing: 2px;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--zen-primary);
+    letter-spacing: 3px;
     font-family: var(--zen-font-secondary);
     position: relative;
+    margin-left: var(--zen-spacing-md);
 }
 
-.logo::after {
+.logo::before {
     content: '';
     position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: var(--zen-primary);
-    border-radius: var(--zen-radius-full);
-    opacity: 0.8;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.05), rgba(231, 76, 60, 0.05));
+    border-radius: var(--zen-radius-xl);
+    z-index: -1;
 }
 
 .subtitle {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--zen-text-secondary);
-    font-weight: normal;
-    font-family: var(--zen-font-secondary);
-    letter-spacing: 1px;
+    font-weight: 300;
+    font-family: var(--zen-font-primary);
+    letter-spacing: 2px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 4px;
 }
 
 @keyframes logoFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-3px) rotate(1deg);
+    }
+    75% {
+        transform: translateY(-3px) rotate(-1deg);
+    }
 }
 
 /* 墨水扩散效果 */
@@ -261,34 +308,42 @@ body::before {
     font-weight: normal;
 }
 
-/* 心情选择区域 */
+/* 心情选择区域 - 现代卡片设计 */
 .mood-section {
     text-align: center;
+    margin-bottom: var(--zen-spacing-xxxl);
 }
 
 .mood-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--zen-spacing-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--zen-spacing-lg);
     justify-content: center;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .mood-btn {
-    padding: var(--zen-spacing-md) var(--zen-spacing-lg);
-    border: 2px solid var(--zen-divider);
-    background: var(--zen-surface);
+    padding: var(--zen-spacing-xl) var(--zen-spacing-lg);
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
     color: var(--zen-text-primary);
-    border-radius: var(--zen-radius-md);
+    border-radius: var(--zen-radius-xl);
     cursor: pointer;
-    font-family: var(--zen-font-secondary);
-    font-size: 1rem;
+    font-family: var(--zen-font-primary);
+    font-size: 1.1rem;
     font-weight: 500;
-    transition: all var(--zen-duration-normal) ease;
+    transition: all var(--zen-duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--zen-shadow-sm);
+    box-shadow: var(--zen-shadow-md);
+    border: 1px solid var(--zen-divider);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .mood-btn::before {
@@ -298,201 +353,475 @@ body::before {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: var(--zen-primary);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     transition: left var(--zen-duration-normal) ease;
+}
+
+.mood-btn:hover::before {
+    left: 100%;
+}
+
+.mood-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--zen-gradient-primary);
+    opacity: 0;
+    transition: opacity var(--zen-duration-normal) ease;
     z-index: 0;
 }
 
 .mood-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--zen-shadow-md);
-    border-color: var(--zen-primary);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--zen-shadow-xl);
+    border-color: transparent;
 }
 
-.mood-btn:hover::before {
-    left: 0;
+.mood-btn:hover::after {
+    opacity: 1;
 }
 
 .mood-btn > span {
     position: relative;
     z-index: 1;
-    transition: color var(--zen-duration-normal) ease;
+    transition: all var(--zen-duration-normal) ease;
+    font-weight: 600;
 }
 
 .mood-btn:hover > span {
     color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .mood-btn.active {
-    background: var(--zen-primary);
+    background: var(--zen-gradient-primary);
     color: white;
-    border-color: var(--zen-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--zen-shadow-md);
+    border-color: transparent;
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: var(--zen-shadow-xl);
 }
 
-.mood-btn.active::before {
-    left: 0;
+.mood-btn.active::after {
+    opacity: 1;
 }
 
-/* 心境专属色彩 */
+/* 心境专属渐变色和图标 */
 .mood-btn[data-mood="平静"] {
     --mood-gradient: var(--mood-calm);
+}
+
+.mood-btn[data-mood="平静"]::after {
+    content: '🌊';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    transition: all var(--zen-duration-normal) ease;
 }
 
 .mood-btn[data-mood="焦虑"] {
     --mood-gradient: var(--mood-anxious);
 }
 
+.mood-btn[data-mood="焦虑"]::after {
+    content: '⚡';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    transition: all var(--zen-duration-normal) ease;
+}
+
 .mood-btn[data-mood="迷茫"] {
     --mood-gradient: var(--mood-confused);
+}
+
+.mood-btn[data-mood="迷茫"]::after {
+    content: '🌫️';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    transition: all var(--zen-duration-normal) ease;
 }
 
 .mood-btn[data-mood="欢喜"] {
     --mood-gradient: var(--mood-happy);
 }
 
+.mood-btn[data-mood="欢喜"]::after {
+    content: '🌸';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    transition: all var(--zen-duration-normal) ease;
+}
+
 .mood-btn[data-mood="困惑"] {
     --mood-gradient: var(--mood-perplexed);
+}
+
+.mood-btn[data-mood="困惑"]::after {
+    content: '🤔';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    transition: all var(--zen-duration-normal) ease;
 }
 
 .mood-btn[data-mood="坚定"] {
     --mood-gradient: var(--mood-determined);
 }
 
-.mood-btn::before {
+.mood-btn[data-mood="坚定"]::after {
+    content: '⚔️';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    transition: all var(--zen-duration-normal) ease;
+}
+
+.mood-btn.active::before {
     background: var(--mood-gradient);
 }
 
-.mood-btn.active {
-    background: var(--mood-gradient);
+.mood-btn.active::after {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
-/* 抽签区域 */
+/* 抽签区域 - 现代中式设计 */
 .draw-section {
     text-align: center;
-    padding: 40px 0;
+    padding: var(--zen-spacing-xxxl) 0;
+    position: relative;
 }
 
 .draw-area {
-    height: 200px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: var(--zen-spacing-xl);
+    position: relative;
 }
 
 .fortune-teller {
     position: relative;
-    width: 120px;
-    height: 180px;
+    width: 200px;
+    height: 280px;
+    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 
-.stick-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-}
-
-.stick {
-    width: 4px;
-    height: 120px;
-    background: linear-gradient(to bottom, #8b4513, #a0522d);
-    border-radius: 2px;
-    transform-origin: top center;
-    transition: transform 0.5s ease;
-}
-
-.stick.animate {
-    animation: stickDraw 2s ease-in-out;
-}
-
-@keyframes stickDraw {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.cylinder {
+.cylinder-container {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 60px;
+    width: 120px;
+    height: 200px;
+    z-index: 1;
+}
+
+.cylinder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg,
+        #8B4513 0%,
+        #A0522D 20%,
+        #CD853F 50%,
+        #A0522D 80%,
+        #8B4513 100%);
+    border-radius: 20px 20px 60px 60px;
+    box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.3),
+        0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    transition: transform var(--zen-duration-normal) ease;
+}
+
+.cylinder.ready {
+    animation: cylinderReady 2s ease-in-out infinite;
+}
+
+.cylinder.shaking {
+    animation: cylinderShaking 1.5s ease-in-out;
+}
+
+.cylinder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: linear-gradient(90deg, #D4AF37, #FFD700, #D4AF37);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.cylinder::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 0 0 60px 60px;
 }
 
 .cylinder-top {
-    width: 80px;
-    height: 15px;
-    background: #8b4513;
+    width: 100%;
+    height: 20px;
+    background: radial-gradient(ellipse at center, #A0522D, #8B4513);
     border-radius: 50%;
     position: absolute;
-    top: 0;
+    top: -10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .cylinder-body {
-    width: 80px;
-    height: 45px;
-    background: linear-gradient(to bottom, #8b4513, #a0522d);
-    border-radius: 0 0 40px 40px;
     position: absolute;
+    top: 10px;
+    left: 5px;
+    right: 5px;
+    bottom: 10px;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(139, 69, 19, 0.1),
+        rgba(139, 69, 19, 0.1) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    border-radius: 15px 15px 55px 55px;
+}
+
+.cylinder-bottom {
+    position: absolute;
+    bottom: -5px;
+    left: 10px;
+    right: 10px;
+    height: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    filter: blur(2px);
+}
+
+.sticks-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 180px;
+    z-index: 2;
+}
+
+.stick {
+    position: absolute;
+    width: 3px;
+    height: 100px;
+    background: linear-gradient(to bottom, #D2691E, #8B4513);
+    border-radius: 1.5px;
+    transform-origin: bottom center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    opacity: 0.8;
+    transition: transform var(--zen-duration-quick) ease;
+}
+
+.stick.shaking {
+    animation: stickShaking 0.3s ease-in-out infinite;
+}
+
+.stick-1 {
+    left: 10px;
+    top: 20px;
+    transform: rotate(-5deg);
+}
+
+.stick-2 {
+    left: 30px;
     top: 15px;
+    transform: rotate(3deg);
+}
+
+.stick-3 {
+    right: 15px;
+    top: 25px;
+    transform: rotate(-2deg);
+}
+
+.main-stick {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    width: 4px;
+    height: 120px;
+    background: linear-gradient(to bottom, #D4AF37, #B8860B, #D4AF37);
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 10;
+    transition: all var(--zen-duration-slow) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-stick.ready {
+    animation: stickReady 2s ease-in-out infinite;
+}
+
+.main-stick.drawing {
+    animation: stickDrawing 3s ease-in-out forwards;
+}
+
+.cylinder-shadow {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 30px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.3), transparent);
+    border-radius: 50%;
+    filter: blur(8px);
+}
+
+@keyframes stickReady {
+    0%, 100% { transform: translateX(-50%) translateY(0px); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+@keyframes stickDrawing {
+    0% {
+        transform: translateX(-50%) translateY(0px) rotate(0deg);
+        opacity: 1;
+    }
+    30% {
+        transform: translateX(-50%) translateY(-80px) rotate(180deg);
+        opacity: 1;
+    }
+    60% {
+        transform: translateX(-50%) translateY(-120px) rotate(360deg);
+        opacity: 0.8;
+    }
+    80% {
+        transform: translateX(-50%) translateY(-60px) rotate(540deg);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateX(-50%) translateY(0px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes cylinderReady {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.02); }
+}
+
+@keyframes cylinderShaking {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    10% { transform: translateX(-50%) rotate(-2deg) scale(1.01); }
+    20% { transform: translateX(-50%) rotate(2deg) scale(0.99); }
+    30% { transform: translateX(-50%) rotate(-1deg) scale(1.01); }
+    40% { transform: translateX(-50%) rotate(1deg) scale(0.99); }
+    50% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
+    60% { transform: translateX(-50%) rotate(3deg) scale(0.98); }
+    70% { transform: translateX(-50%) rotate(-2deg) scale(1.01); }
+    80% { transform: translateX(-50%) rotate(2deg) scale(0.99); }
+    90% { transform: translateX(-50%) rotate(-1deg) scale(1.01); }
+}
+
+@keyframes stickShaking {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
 }
 
 .draw-btn {
-    padding: var(--zen-spacing-lg) var(--zen-spacing-xl);
-    background: var(--zen-primary);
+    padding: var(--zen-spacing-xl) var(--zen-spacing-xxl);
+    background: linear-gradient(135deg, var(--zen-primary), var(--zen-primary-light));
     color: white;
     border: none;
-    border-radius: var(--zen-radius-md);
-    font-size: 1.1rem;
-    font-family: var(--zen-font-secondary);
-    font-weight: 500;
+    border-radius: var(--zen-radius-xl);
+    font-size: 1.2rem;
+    font-family: var(--zen-font-primary);
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--zen-duration-normal) ease;
+    transition: all var(--zen-duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--zen-shadow-md);
+    box-shadow: var(--zen-shadow-xl);
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--zen-spacing-md);
+    min-width: 200px;
+    min-height: 60px;
 }
 
 .draw-btn::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: var(--zen-radius-full);
-    transform: translate(-50%, -50%);
-    transition: width var(--zen-duration-normal) ease, height var(--zen-duration-normal) ease;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left var(--zen-duration-normal) ease;
 }
 
 .draw-btn:hover:not(:disabled) {
-    background: var(--zen-primary-light);
-    transform: translateY(-3px);
-    box-shadow: var(--zen-shadow-lg);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--zen-shadow-xl);
+    background: linear-gradient(135deg, var(--zen-primary-light), var(--zen-primary));
 }
 
 .draw-btn:hover:not(:disabled)::before {
-    width: 300px;
-    height: 300px;
+    left: 100%;
 }
 
 .draw-btn:disabled {
-    background: var(--zen-text-tertiary);
+    background: linear-gradient(135deg, var(--zen-text-tertiary), var(--zen-divider));
     cursor: not-allowed;
-    box-shadow: none;
+    box-shadow: var(--zen-shadow-sm);
     transform: none;
+    opacity: 0.6;
 }
 
 .draw-btn:not(:disabled):active {
-    transform: translateY(-1px);
-    box-shadow: var(--zen-shadow-md);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: var(--zen-shadow-lg);
+}
+
+.draw-btn-text {
+    position: relative;
+    z-index: 1;
+}
+
+.draw-btn-icon {
+    position: relative;
+    z-index: 1;
+    font-size: 1.4rem;
+    transition: transform var(--zen-duration-normal) ease;
+}
+
+.draw-btn:hover:not(:disabled) .draw-btn-icon {
+    transform: scale(1.2) rotate(10deg);
 }
 
 /* 结果展示区域 */

@@ -34,16 +34,26 @@
             <section class="draw-section">
                 <div class="draw-area" id="drawArea">
                     <div class="fortune-teller">
-                        <div class="stick-container">
-                            <div class="stick" id="stick"></div>
+                        <div class="cylinder-container">
+                            <div class="cylinder">
+                                <div class="cylinder-top"></div>
+                                <div class="cylinder-body"></div>
+                                <div class="cylinder-bottom"></div>
+                            </div>
+                            <div class="sticks-container">
+                                <div class="stick stick-1"></div>
+                                <div class="stick stick-2"></div>
+                                <div class="stick stick-3"></div>
+                                <div class="stick main-stick" id="stick"></div>
+                            </div>
                         </div>
-                        <div class="cylinder">
-                            <div class="cylinder-top"></div>
-                            <div class="cylinder-body"></div>
-                        </div>
+                        <div class="cylinder-shadow"></div>
                     </div>
                 </div>
-                <button class="draw-btn" id="drawBtn" disabled>请先选择心境</button>
+                <button class="draw-btn" id="drawBtn" disabled>
+                    <span class="draw-btn-text">请先选择心境</span>
+                    <span class="draw-btn-icon">🎯</span>
+                </button>
             </section>
 
             <section class="result-section" id="resultSection" style="display: none;">

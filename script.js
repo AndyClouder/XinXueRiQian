@@ -327,7 +327,7 @@ function selectMood(button) {
 
     // 启用抽签按钮
     drawBtn.disabled = false;
-    drawBtn.textContent = '开始抽签';
+    drawBtn.querySelector('.draw-btn-text').textContent = '开始抽签';
 
     // 隐藏结果区域
     resultSection.style.display = 'none';
@@ -360,15 +360,47 @@ function drawFortune() {
 
     isDrawing = true;
     drawBtn.disabled = true;
-    drawBtn.textContent = '抽签中...';
+    drawBtn.querySelector('.draw-btn-text').textContent = '抽签中...';
 
-    // 开始抽签动画
-    stick.classList.add('animate');
+    // 获取所有签筒和签子元素
+    const cylinder = document.querySelector('.cylinder');
+    const allSticks = document.querySelectorAll('.stick');
+    const mainStick = document.getElementById('stick');
 
-    // 模拟抽签过程
+    // 准备阶段
+    cylinder.classList.add('ready');
+    allSticks.forEach(stick => {
+        stick.classList.add('ready');
+    });
+
+    // 开始摇签动画
+    setTimeout(() => {
+        cylinder.classList.add('shaking');
+        allSticks.forEach((stick, index) => {
+            setTimeout(() => {
+                stick.classList.add('shaking');
+            }, index * 100);
+        });
+    }, 500);
+
+    // 主签子弹出动画
+    setTimeout(() => {
+        mainStick.classList.add('drawing');
+        cylinder.classList.remove('shaking');
+        allSticks.forEach(stick => {
+            stick.classList.remove('shaking');
+        });
+    }, 2000);
+
+    // 显示结果
     setTimeout(() => {
         showFortune();
-    }, 2000);
+        // 重置动画状态
+        cylinder.classList.remove('ready', 'shaking');
+        allSticks.forEach(stick => {
+            stick.classList.remove('ready', 'shaking', 'drawing');
+        });
+    }, 3500);
 }
 
 // 创建墨水扩散效果
@@ -456,7 +488,6 @@ function showFortune() {
     addClickHint();
 
     // 重置状态
-    stick.classList.remove('animate');
     isDrawing = false;
 
     // 启动自动显示解释的定时器
@@ -545,13 +576,13 @@ function resetFortune() {
 
     // 重置抽签按钮
     drawBtn.disabled = false;
-    drawBtn.textContent = '再抽一签';
+    drawBtn.querySelector('.draw-btn-text').textContent = '再抽一签';
 
     // 清除心情选择
     moodButtons.forEach(btn => btn.classList.remove('active'));
     selectedMood = null;
     drawBtn.disabled = true;
-    drawBtn.textContent = '请先选择心境';
+    drawBtn.querySelector('.draw-btn-text').textContent = '请先选择心境';
 
     // 清理事件监听器
     removeClickHint();
@@ -735,50 +766,153 @@ function drawPoster() {
 
 // 绘制海报背景
 function drawPosterBackground(ctx, canvas) {
-    // 宣纸纹理背景
+    // 新中式现代纸张纹理背景
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#f9f6f0');
-    gradient.addColorStop(0.5, '#f5f2ec');
-    gradient.addColorStop(1, '#efe9e0');
+    gradient.addColorStop(0, '#FAFAFA');
+    gradient.addColorStop(0.5, '#F5F5F5');
+    gradient.addColorStop(1, '#EFEFEF');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 添加宣纸纹理
-    ctx.globalAlpha = 0.03;
-    for (let i = 0; i < canvas.height; i += 2) {
-        for (let j = 0; j < canvas.width; j += 2) {
-            if (Math.random() > 0.8) {
-                ctx.fillStyle = '#8b4513';
+    // 添加现代纸张纹理
+    ctx.globalAlpha = 0.02;
+    for (let i = 0; i < canvas.height; i += 3) {
+        for (let j = 0; j < canvas.width; j += 3) {
+            if (Math.random() > 0.85) {
+                ctx.fillStyle = '#2C3E50';
                 ctx.fillRect(j, i, 1, 1);
             }
         }
     }
     ctx.globalAlpha = 1;
 
-    // 绘制传统边框
-    drawTraditionalBorder(ctx, canvas);
+    // 添加几何纹理线条
+    ctx.globalAlpha = 0.01;
+    ctx.strokeStyle = '#2C3E50';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < canvas.width; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+    }
+    for (let i = 0; i < canvas.height; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
 
-    // 四角传统纹样
-    drawCornerPatterns(ctx, canvas);
+    // 绘制新中式边框
+    drawModernBorder(ctx, canvas);
 
-    // 墨色晕染效果
-    drawInkWashEffect(ctx, canvas);
+    // 四角现代纹样
+    drawModernCornerPatterns(ctx, canvas);
+
+    // 现代墨色晕染效果
+    drawModernInkWashEffect(ctx, canvas);
 }
 
-// 绘制传统边框
-function drawTraditionalBorder(ctx, canvas) {
-    const margin = 30;
-    const borderWidth = 2;
+// 绘制新中式边框
+function drawModernBorder(ctx, canvas) {
+    const margin = 25;
+    const borderWidth = 3;
 
-    // 外边框
-    ctx.strokeStyle = '#8b4513';
+    // 外边框 - 主色调
+    ctx.strokeStyle = '#2C3E50';
     ctx.lineWidth = borderWidth;
     ctx.strokeRect(margin, margin, canvas.width - margin * 2, canvas.height - margin * 2);
 
-    // 内边框
-    ctx.strokeStyle = 'rgba(139, 69, 19, 0.3)';
+    // 中边框 - 装饰线
+    ctx.strokeStyle = 'rgba(44, 62, 80, 0.3)';
     ctx.lineWidth = 1;
-    ctx.strokeRect(margin + 8, margin + 8, canvas.width - margin * 2 - 16, canvas.height - margin * 2 - 16);
+    ctx.strokeRect(margin + 12, margin + 12, canvas.width - margin * 2 - 24, canvas.height - margin * 2 - 24);
+
+    // 内边框 - 点缀色
+    ctx.strokeStyle = '#E74C3C';
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([5, 5]);
+    ctx.strokeRect(margin + 20, margin + 20, canvas.width - margin * 2 - 40, canvas.height - margin * 2 - 40);
+    ctx.setLineDash([]);
+}
+
+// 绘制现代四角纹样
+function drawModernCornerPatterns(ctx, canvas) {
+    const margin = 25;
+    const patternSize = 50;
+
+    ctx.strokeStyle = '#2C3E50';
+    ctx.lineWidth = 2;
+
+    // 左上角
+    drawModernCornerOrnament(ctx, margin, margin, patternSize, 'tl');
+    // 右上角
+    drawModernCornerOrnament(ctx, canvas.width - margin, margin, patternSize, 'tr');
+    // 左下角
+    drawModernCornerOrnament(ctx, margin, canvas.height - margin, patternSize, 'bl');
+    // 右下角
+    drawModernCornerOrnament(ctx, canvas.width - margin, canvas.height - margin, patternSize, 'br');
+}
+
+// 绘制现代角落装饰
+function drawModernCornerOrnament(ctx, x, y, size, corner) {
+    ctx.beginPath();
+
+    switch(corner) {
+        case 'tl':
+            // 现代几何设计
+            ctx.moveTo(x, y + size * 0.7);
+            ctx.lineTo(x, y);
+            ctx.lineTo(x + size * 0.7, y);
+            ctx.moveTo(x + size * 0.3, y);
+            ctx.lineTo(x + size * 0.3, y + size * 0.3);
+            ctx.lineTo(x, y + size * 0.3);
+            break;
+        case 'tr':
+            ctx.moveTo(x - size * 0.7, y);
+            ctx.lineTo(x, y);
+            ctx.lineTo(x, y + size * 0.7);
+            ctx.moveTo(x - size * 0.3, y);
+            ctx.lineTo(x - size * 0.3, y + size * 0.3);
+            ctx.lineTo(x, y + size * 0.3);
+            break;
+        case 'bl':
+            ctx.moveTo(x, y - size * 0.7);
+            ctx.lineTo(x, y);
+            ctx.lineTo(x + size * 0.7, y);
+            ctx.moveTo(x + size * 0.3, y);
+            ctx.lineTo(x + size * 0.3, y - size * 0.3);
+            ctx.lineTo(x, y - size * 0.3);
+            break;
+        case 'br':
+            ctx.moveTo(x - size * 0.7, y);
+            ctx.lineTo(x, y);
+            ctx.lineTo(x, y - size * 0.7);
+            ctx.moveTo(x - size * 0.3, y);
+            ctx.lineTo(x - size * 0.3, y - size * 0.3);
+            ctx.lineTo(x, y - size * 0.3);
+            break;
+    }
+    ctx.stroke();
+}
+
+// 绘制现代墨色晕染效果
+function drawModernInkWashEffect(ctx, canvas) {
+    // 左上角晕染 - 几何渐变
+    const gradient1 = ctx.createRadialGradient(80, 120, 0, 80, 120, 150);
+    gradient1.addColorStop(0, 'rgba(44, 62, 80, 0.08)');
+    gradient1.addColorStop(0.5, 'rgba(44, 62, 80, 0.04)');
+    gradient1.addColorStop(1, 'rgba(44, 62, 80, 0)');
+    ctx.fillStyle = gradient1;
+    ctx.fillRect(0, 0, 200, 300);
+
+    // 右下角晕染
+    const gradient2 = ctx.createRadialGradient(canvas.width - 80, canvas.height - 80, 0, canvas.width - 80, canvas.height - 80, 120);
+    gradient2.addColorStop(0, 'rgba(231, 76, 60, 0.06)');
+    gradient2.addColorStop(1, 'rgba(231, 76, 60, 0)');
+    ctx.fillStyle = gradient2;
+    ctx.fillRect(canvas.width - 200, canvas.height - 200, 200, 200);
 }
 
 // 绘制四角传统纹样
@@ -847,52 +981,52 @@ function drawInkWashEffect(ctx, canvas) {
 
 // 绘制海报头部
 function drawPosterHeader(ctx, canvas) {
-    // 印章装饰
-    drawSeal(ctx, canvas);
+    // 现代印章装饰
+    drawModernSeal(ctx, canvas);
 
-    // 手写风格Logo
+    // 现代Logo设计
     ctx.save();
-    ctx.font = 'bold 42px 楷体, KaiTi, serif';
-    ctx.fillStyle = '#8b4513';
+    ctx.font = 'bold 48px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#2C3E50';
     ctx.textAlign = 'center';
-    // 添加轻微旋转效果
-    ctx.translate(canvas.width / 2, 85);
-    ctx.rotate(-0.05);
+    // 现代简洁风格
+    ctx.translate(canvas.width / 2, 75);
     ctx.fillText('心', 0, 0);
     ctx.restore();
 
-    // 标题 - 手写风格
-    ctx.font = 'bold 32px 楷体, KaiTi, serif';
-    ctx.fillStyle = '#2c1810';
+    // 标题 - 现代字体
+    ctx.font = 'bold 36px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#2C3E50';
     ctx.textAlign = 'center';
-    ctx.fillText('心学日签', canvas.width / 2, 140);
+    ctx.fillText('心学日签', canvas.width / 2, 125);
 
-    // 副标题 - 更细的字体
-    ctx.font = '16px 宋体, SimSun, serif';
-    ctx.fillStyle = '#666';
-    ctx.fillText('每日一心学，日日有真言', canvas.width / 2, 165);
+    // 副标题 - 现代字体
+    ctx.font = '16px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#7F8C8D';
+    ctx.fillText('每日一心学，日日有真言', canvas.width / 2, 150);
 }
 
-// 绘制印章
-function drawSeal(ctx, canvas) {
-    const sealX = canvas.width - 100;
-    const sealY = 80;
-    const sealSize = 50;
+// 绘制现代印章
+function drawModernSeal(ctx, canvas) {
+    const sealX = canvas.width - 90;
+    const sealY = 45;
+    const sealSize = 45;
 
-    // 印章背景
-    ctx.fillStyle = '#dc143c';
-    roundRect(ctx, sealX, sealY, sealSize, sealSize, 5);
+    // 现代印章背景 - 圆形设计
+    ctx.fillStyle = '#E74C3C';
+    ctx.beginPath();
+    ctx.arc(sealX + sealSize/2, sealY + sealSize/2, sealSize/2, 0, Math.PI * 2);
     ctx.fill();
 
-    // 印章文字
+    // 印章文字 - 简洁现代
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 14px 楷体, KaiTi, serif';
+    ctx.font = 'bold 12px "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
     ctx.save();
     ctx.translate(sealX + sealSize/2, sealY + sealSize/2);
-    ctx.rotate(Math.PI / 4);
-    ctx.fillText('心学', 0, -5);
-    ctx.fillText('日签', 0, 10);
+    ctx.rotate(Math.PI / 6);
+    ctx.fillText('心学', 0, -4);
+    ctx.fillText('日签', 0, 8);
     ctx.restore();
 }
 
@@ -902,20 +1036,28 @@ function drawPosterDate(ctx, canvas) {
     const dateText = currentPosterData.date;
     const textWidth = ctx.measureText(dateText).width;
     const bgWidth = textWidth + 40;
-    const bgHeight = 30;
+    const bgHeight = 32;
     const bgX = (canvas.width - bgWidth) / 2;
-    const bgY = 190;
+    const bgY = 175;
 
-    // 绘制日期背景
-    ctx.fillStyle = 'rgba(139, 69, 19, 0.08)';
-    roundRect(ctx, bgX, bgY, bgWidth, bgHeight, 15);
+    // 绘制日期背景 - 现代设计
+    const dateGradient = ctx.createLinearGradient(bgX, bgY, bgX + bgWidth, bgY + bgHeight);
+    dateGradient.addColorStop(0, 'rgba(44, 62, 80, 0.08)');
+    dateGradient.addColorStop(1, 'rgba(44, 62, 80, 0.04)');
+    ctx.fillStyle = dateGradient;
+    roundRect(ctx, bgX, bgY, bgWidth, bgHeight, 16);
     ctx.fill();
 
+    // 日期边框
+    ctx.strokeStyle = 'rgba(44, 62, 80, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(bgX, bgY, bgWidth, bgHeight);
+
     // 日期文字
-    ctx.font = '18px 宋体, SimSun, serif';
-    ctx.fillStyle = '#8b4513';
+    ctx.font = '18px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#2C3E50';
     ctx.textAlign = 'center';
-    ctx.fillText(dateText, canvas.width / 2, bgY + 20);
+    ctx.fillText(dateText, canvas.width / 2, bgY + 22);
 }
 
 // 绘制心境
@@ -923,55 +1065,69 @@ function drawPosterMood(ctx, canvas) {
     // 心境标签背景
     const moodText = `${currentPosterData.mood}之时`;
     const textWidth = ctx.measureText(moodText).width;
-    const padding = 25;
+    const padding = 20;
     const badgeWidth = textWidth + padding * 2;
-    const badgeHeight = 45;
+    const badgeHeight = 40;
     const badgeX = (canvas.width - badgeWidth) / 2;
-    const badgeY = 250;
+    const badgeY = 235;
 
-    // 获取心境颜色
+    // 获取现代心境颜色
     const moodColors = {
-        '平静': '#4a90e2',
-        '焦虑': '#ff7043',
-        '迷茫': '#7e57c2',
-        '欢喜': '#66bb6a',
-        '困惑': '#8d6e63',
-        '坚定': '#ef5350'
+        '平静': '#3498DB',
+        '焦虑': '#E67E22',
+        '迷茫': '#9B59B6',
+        '欢喜': '#27AE60',
+        '困惑': '#95A5A6',
+        '坚定': '#E74C3C'
     };
 
-    // 绘制外边框
-    ctx.strokeStyle = moodColors[currentPosterData.mood] || '#8b4513';
-    ctx.lineWidth = 2;
-    roundRect(ctx, badgeX - 2, badgeY - 2, badgeWidth + 4, badgeHeight + 4, 22);
+    // 绘制外边框 - 现代设计
+    ctx.strokeStyle = moodColors[currentPosterData.mood] || '#2C3E50';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, badgeX - 1, badgeY - 1, badgeWidth + 2, badgeHeight + 2, 20);
     ctx.stroke();
 
-    // 绘制圆角矩形背景
-    ctx.fillStyle = moodColors[currentPosterData.mood] || '#8b4513';
+    // 绘制圆角矩形背景 - 现代渐变
+    const moodGradient = ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeWidth, badgeY + badgeHeight);
+    moodGradient.addColorStop(0, moodColors[currentPosterData.mood] || '#2C3E50');
+    moodGradient.addColorStop(1, adjustBrightness(moodColors[currentPosterData.mood] || '#2C3E50', -20));
+    ctx.fillStyle = moodGradient;
     roundRect(ctx, badgeX, badgeY, badgeWidth, badgeHeight, 20);
     ctx.fill();
 
-    // 添加光泽效果
+    // 添加现代光泽效果
     const glossGradient = ctx.createLinearGradient(badgeX, badgeY, badgeX, badgeY + badgeHeight/2);
-    glossGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-    glossGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    glossGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+    glossGradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)');
     ctx.fillStyle = glossGradient;
     roundRect(ctx, badgeX, badgeY, badgeWidth, badgeHeight/2, 20);
     ctx.fill();
 
     // 绘制心境文字
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 20px 楷体, KaiTi, serif';
+    ctx.font = 'bold 18px "Microsoft YaHei", "PingFang SC", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(moodText, canvas.width / 2, badgeY + 28);
+    ctx.fillText(moodText, canvas.width / 2, badgeY + 26);
 
-    // 添加小装饰点
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    // 添加现代装饰线
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.arc(badgeX + 15, badgeY + badgeHeight/2, 3, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(badgeX + badgeWidth - 15, badgeY + badgeHeight/2, 3, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(badgeX + 15, badgeY + badgeHeight/2);
+    ctx.lineTo(badgeX + badgeWidth - 15, badgeY + badgeHeight/2);
+    ctx.stroke();
+}
+
+// 辅助函数：调整颜色亮度
+function adjustBrightness(color, percent) {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) + amt;
+    const G = (num >> 8 & 0x00FF) + amt;
+    const B = (num & 0x0000FF) + amt;
+    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
 }
 
 // 绘制真言内容
@@ -980,49 +1136,54 @@ function drawPosterFortune(ctx, canvas) {
     const fortuneAreaWidth = canvas.width - 120;
     const fortuneAreaHeight = 140;
     const fortuneX = (canvas.width - fortuneAreaWidth) / 2;
-    const fortuneY = 320;
+    const fortuneY = 300;
 
-    // 绘制真言区域背景
-    ctx.fillStyle = 'rgba(139, 69, 19, 0.02)';
-    roundRect(ctx, fortuneX, fortuneY, fortuneAreaWidth, fortuneAreaHeight, 12);
+    // 绘制真言区域背景 - 现代设计
+    const fortuneGradient = ctx.createLinearGradient(fortuneX, fortuneY, fortuneX, fortuneY + fortuneAreaHeight);
+    fortuneGradient.addColorStop(0, 'rgba(44, 62, 80, 0.03)');
+    fortuneGradient.addColorStop(1, 'rgba(44, 62, 80, 0.01)');
+    ctx.fillStyle = fortuneGradient;
+    roundRect(ctx, fortuneX, fortuneY, fortuneAreaWidth, fortuneAreaHeight, 15);
     ctx.fill();
 
-    // 绘制左右装饰线
-    ctx.strokeStyle = 'rgba(139, 69, 19, 0.2)';
+    // 绘制左右装饰线 - 现代几何设计
+    ctx.strokeStyle = 'rgba(44, 62, 80, 0.15)';
     ctx.lineWidth = 1;
+    ctx.setLineDash([5, 3]);
     ctx.beginPath();
-    ctx.moveTo(fortuneX + 20, fortuneY + 20);
-    ctx.lineTo(fortuneX + 20, fortuneY + fortuneAreaHeight - 20);
-    ctx.moveTo(fortuneX + fortuneAreaWidth - 20, fortuneY + 20);
-    ctx.lineTo(fortuneX + fortuneAreaWidth - 20, fortuneY + fortuneAreaHeight - 20);
+    ctx.moveTo(fortuneX + 25, fortuneY + 25);
+    ctx.lineTo(fortuneX + 25, fortuneY + fortuneAreaHeight - 25);
+    ctx.moveTo(fortuneX + fortuneAreaWidth - 25, fortuneY + 25);
+    ctx.lineTo(fortuneX + fortuneAreaWidth - 25, fortuneY + fortuneAreaHeight - 25);
     ctx.stroke();
+    ctx.setLineDash([]);
 
-    // 主要真言 - 更大的字体
-    ctx.font = 'bold 32px 宋体, SimSun, serif';
-    ctx.fillStyle = '#1a1a1a';
+    // 主要真言 - 现代字体
+    ctx.font = 'bold 30px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#2C3E50';
     ctx.textAlign = 'center';
 
     // 处理长文本换行
     const maxWidth = canvas.width - 160;
     const lines = wrapText(ctx, currentPosterData.fortune, maxWidth);
-    const lineHeight = 42;
+    const lineHeight = 40;
     const startY = fortuneY + 35;
 
     lines.forEach((line, index) => {
         ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
     });
 
-    // 出处 - 更优雅的设计
+    // 出处 - 现代设计
     const sourceY = startY + lines.length * lineHeight + 15;
-    ctx.font = 'italic 16px 宋体, SimSun, serif';
-    ctx.fillStyle = '#8b4513';
+    ctx.font = '16px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#7F8C8D';
     ctx.fillText('—— ' + currentPosterData.source, canvas.width / 2, sourceY);
 
-    // 添加装饰性元素
-    ctx.fillStyle = 'rgba(139, 69, 19, 0.3)';
-    ctx.font = '20px serif';
-    ctx.fillText('❞', fortuneX + 10, fortuneY + 35);
-    ctx.fillText('❝', fortuneX + fortuneAreaWidth - 25, startY + lines.length * lineHeight);
+    // 添加现代装饰性元素
+    ctx.fillStyle = 'rgba(44, 62, 80, 0.2)';
+    ctx.font = '24px "Microsoft YaHei", sans-serif';
+    ctx.fillText('「', fortuneX + 15, fortuneY + 40);
+    ctx.fillText('」', fortuneX + fortuneAreaWidth - 20, startY + lines.length * lineHeight - 5);
 }
 
 // 绘制海报实践项
@@ -1030,7 +1191,7 @@ function drawPosterPractice(ctx, canvas) {
     if (!currentPosterData.application) return;
 
     // 实践项区域设计
-    const startY = 500;
+    const startY = 480;
     const padding = 20;
     const maxWidth = canvas.width - 140;
     const titleHeight = 35;
@@ -1039,34 +1200,34 @@ function drawPosterPractice(ctx, canvas) {
     const boxX = (canvas.width - boxWidth) / 2;
     const boxY = startY;
 
-    // 绘制外边框
-    ctx.strokeStyle = 'rgba(139, 69, 19, 0.3)';
+    // 绘制外边框 - 现代设计
+    ctx.strokeStyle = 'rgba(44, 62, 80, 0.2)';
     ctx.lineWidth = 1;
-    roundRect(ctx, boxX - 2, boxY - 2, boxWidth + 4, titleHeight + contentHeight + 15, 10);
+    roundRect(ctx, boxX - 2, boxY - 2, boxWidth + 4, titleHeight + contentHeight + 15, 12);
     ctx.stroke();
 
-    // 绘制实践项背景框 - 渐变效果
+    // 绘制实践项背景框 - 现代渐变效果
     const practiceGradient = ctx.createLinearGradient(boxX, boxY, boxX, boxY + titleHeight + contentHeight + 15);
-    practiceGradient.addColorStop(0, 'rgba(139, 69, 19, 0.05)');
-    practiceGradient.addColorStop(1, 'rgba(139, 69, 19, 0.02)');
+    practiceGradient.addColorStop(0, 'rgba(44, 62, 80, 0.04)');
+    practiceGradient.addColorStop(1, 'rgba(44, 62, 80, 0.01)');
     ctx.fillStyle = practiceGradient;
-    roundRect(ctx, boxX, boxY, boxWidth, titleHeight + contentHeight + 15, 8);
+    roundRect(ctx, boxX, boxY, boxWidth, titleHeight + contentHeight + 15, 10);
     ctx.fill();
 
-    // 绘制实践项标题背景
-    ctx.fillStyle = 'rgba(139, 69, 19, 0.8)';
-    roundRect(ctx, boxX, boxY, boxWidth, titleHeight, 8);
+    // 绘制实践项标题背景 - 现代设计
+    ctx.fillStyle = '#2C3E50';
+    roundRect(ctx, boxX, boxY, boxWidth, titleHeight, 10);
     ctx.fill();
 
     // 绘制实践项标题
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 16px 楷体, KaiTi, serif';
+    ctx.font = 'bold 16px "Microsoft YaHei", "PingFang SC", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('实践项', canvas.width / 2, boxY + 22);
+    ctx.fillText('实践指导', canvas.width / 2, boxY + 23);
 
     // 绘制实践项内容
-    ctx.font = '14px 宋体, SimSun, serif';
-    ctx.fillStyle = '#2c1810';
+    ctx.font = '14px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#34495E';
     const practiceLines = wrapText(ctx, currentPosterData.application, maxWidth - 30);
     const lineHeight = 18;
 
@@ -1074,20 +1235,20 @@ function drawPosterPractice(ctx, canvas) {
         ctx.fillText(line, canvas.width / 2, boxY + titleHeight + 20 + index * lineHeight);
     });
 
-    // 绘制冥想建议 - 更优雅的设计
-    const meditationY = boxY + titleHeight + contentHeight + 25;
+    // 绘制现代建议 - 简洁设计
+    const suggestionY = boxY + titleHeight + contentHeight + 25;
 
-    // 冥想图标
-    ctx.font = '18px serif';
-    ctx.fillStyle = '#8b4513';
-    ctx.fillText('🧘‍♀️', (canvas.width - 200) / 2, meditationY);
+    // 建议图标
+    ctx.font = '16px "Microsoft YaHei", sans-serif';
+    ctx.fillStyle = '#E74C3C';
+    ctx.fillText('💡', (canvas.width - 200) / 2, suggestionY);
 
-    // 冥想文字
-    ctx.font = '13px 宋体, SimSun, serif';
-    ctx.fillStyle = '#666';
+    // 建议文字
+    ctx.font = '13px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#7F8C8D';
     ctx.textAlign = 'left';
-    const meditationText = '建议：静心冥想3分钟，体会此实践';
-    ctx.fillText(meditationText, (canvas.width - 200) / 2 + 25, meditationY);
+    const suggestionText = '建议：静心体会此实践，融入日常生活';
+    ctx.fillText(suggestionText, (canvas.width - 200) / 2 + 25, suggestionY);
 }
 
 // 绘制海报底部
@@ -1095,59 +1256,85 @@ function drawPosterFooter(ctx, canvas) {
     // 底部装饰区域
     const footerY = canvas.height - 120;
 
-    // 绘制底部装饰线 - 双线设计
-    ctx.strokeStyle = '#8b4513';
+    // 绘制底部装饰线 - 现代设计
+    ctx.strokeStyle = '#2C3E50';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(canvas.width * 0.25, footerY);
     ctx.lineTo(canvas.width * 0.75, footerY);
     ctx.stroke();
 
-    ctx.strokeStyle = 'rgba(139, 69, 19, 0.3)';
+    ctx.strokeStyle = 'rgba(44, 62, 80, 0.3)';
     ctx.lineWidth = 1;
+    ctx.setLineDash([3, 2]);
     ctx.beginPath();
-    ctx.moveTo(canvas.width * 0.25, footerY + 8);
-    ctx.lineTo(canvas.width * 0.75, footerY + 8);
+    ctx.moveTo(canvas.width * 0.25, footerY + 10);
+    ctx.lineTo(canvas.width * 0.75, footerY + 10);
     ctx.stroke();
+    ctx.setLineDash([]);
 
-    // 底部格言 - 书法风格
-    ctx.font = '15px 楷体, KaiTi, serif';
-    ctx.fillStyle = '#8b4513';
+    // 底部格言 - 现代字体
+    ctx.font = '15px "Microsoft YaHei", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#2C3E50';
     ctx.textAlign = 'center';
     ctx.fillText('致良知 · 知行合一 · 格物致知', canvas.width / 2, footerY + 35);
 
-    // 底部装饰印章
-    drawSmallSeal(ctx, canvas, 80, canvas.height - 90);
+    // 底部现代装饰印章
+    drawModernSmallSeal(ctx, canvas, 80, canvas.height - 90);
 
-    // 二维码区域 - 更优雅的设计
+    // 二维码区域 - 现代设计
     const qrSize = 70;
     const qrX = canvas.width - qrSize - 40;
     const qrY = canvas.height - qrSize - 30;
 
     // 二维码背景
     ctx.fillStyle = 'white';
-    ctx.strokeStyle = '#ddd';
+    ctx.strokeStyle = '#BDC3C7';
     ctx.lineWidth = 1;
     roundRect(ctx, qrX - 5, qrY - 5, qrSize + 10, qrSize + 10, 8);
     ctx.fill();
     ctx.stroke();
 
     // 二维码占位符（可以用实际二维码替换）
-    ctx.fillStyle = '#f0f0f0';
+    ctx.fillStyle = '#ECF0F1';
     roundRect(ctx, qrX, qrY, qrSize, qrSize, 5);
     ctx.fill();
 
     // 二维码说明文字
-    ctx.fillStyle = '#8b4513';
-    ctx.font = '11px 宋体, SimSun, serif';
+    ctx.fillStyle = '#7F8C8D';
+    ctx.font = '11px "Microsoft YaHei", "PingFang SC", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('扫码体验', qrX + qrSize/2, qrY + qrSize + 20);
 
-    // 添加小装饰
-    ctx.fillStyle = 'rgba(139, 69, 19, 0.2)';
-    ctx.font = '12px serif';
-    ctx.fillText('❖', canvas.width * 0.25 - 20, footerY + 5);
-    ctx.fillText('❖', canvas.width * 0.75 + 15, footerY + 5);
+    // 添加现代装饰
+    ctx.fillStyle = 'rgba(44, 62, 80, 0.2)';
+    ctx.font = '14px "Microsoft YaHei", sans-serif';
+    ctx.fillText('◆', canvas.width * 0.25 - 20, footerY + 5);
+    ctx.fillText('◆', canvas.width * 0.75 + 15, footerY + 5);
+}
+
+// 绘制现代小印章
+function drawModernSmallSeal(ctx, canvas, x, y) {
+    const sealSize = 35;
+
+    // 现代印章背景 - 圆形设计
+    ctx.fillStyle = 'rgba(231, 76, 60, 0.8)';
+    ctx.beginPath();
+    ctx.arc(x + sealSize/2, y + sealSize/2, sealSize/2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 印章文字 - 简洁现代
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 10px "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.save();
+    ctx.translate(x + sealSize/2, y + sealSize/2);
+    ctx.rotate(Math.PI / 6);
+    ctx.fillText('心', -5, -3);
+    ctx.fillText('学', 5, -3);
+    ctx.fillText('修', -5, 8);
+    ctx.fillText('行', 5, 8);
+    ctx.restore();
 }
 
 // 绘制小印章
