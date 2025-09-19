@@ -74,7 +74,37 @@
                         <div class="progress-step" id="step3">实践</div>
                     </div>
                 </div>
-                <button class="reset-btn" id="resetBtn">再抽一签</button>
+
+                <div class="action-buttons">
+                    <button class="reset-btn" id="resetBtn">再抽一签</button>
+                    <button class="poster-btn" id="posterBtn">
+                        <span class="poster-icon">🎨</span>
+                        生成今日日签海报
+                    </button>
+                </div>
+            </section>
+
+            <!-- 海报生成区域 -->
+            <section class="poster-section" id="posterSection" style="display: none;">
+                <div class="poster-container">
+                    <div class="poster-header">
+                        <h3>心学日签海报</h3>
+                        <button class="close-poster" id="closePoster">✕</button>
+                    </div>
+                    <div class="poster-content">
+                        <canvas id="posterCanvas" width="600" height="950"></canvas>
+                    </div>
+                    <div class="poster-actions">
+                        <button class="download-btn" id="downloadBtn">
+                            <span class="download-icon">💾</span>
+                            保存海报
+                        </button>
+                        <button class="share-btn" id="shareBtn">
+                            <span class="share-icon">📱</span>
+                            分享海报
+                        </button>
+                    </div>
+                </div>
             </section>
         </main>
 

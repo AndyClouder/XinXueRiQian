@@ -826,6 +826,249 @@ body::before {
     }
 }
 
+/* 动作按钮区域 */
+.action-buttons {
+    display: flex;
+    gap: var(--zen-spacing-md);
+    justify-content: center;
+    margin-top: var(--zen-spacing-lg);
+    flex-wrap: wrap;
+}
+
+/* 海报生成按钮 */
+.poster-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--zen-primary), var(--zen-primary-light));
+    color: white;
+    border: none;
+    border-radius: var(--zen-radius-md);
+    font-size: 1rem;
+    font-family: var(--zen-font-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--zen-duration-normal) ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--zen-shadow-md);
+    display: flex;
+    align-items: center;
+    gap: var(--zen-spacing-sm);
+}
+
+.poster-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--zen-radius-full);
+    transform: translate(-50%, -50%);
+    transition: width var(--zen-duration-normal) ease, height var(--zen-duration-normal) ease;
+}
+
+.poster-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--zen-shadow-lg);
+}
+
+.poster-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.poster-icon {
+    font-size: 1.2rem;
+}
+
+/* 海报生成区域 */
+.poster-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: var(--zen-spacing-md);
+}
+
+.poster-container {
+    background: white;
+    border-radius: var(--zen-radius-lg);
+    max-width: 90vw;
+    max-height: 95vh;
+    overflow: auto;
+    box-shadow: var(--zen-shadow-lg);
+    animation: posterSlideIn 0.3s ease-out;
+}
+
+@keyframes posterSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.poster-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--zen-spacing-lg);
+    background: var(--zen-primary);
+    color: white;
+}
+
+.poster-header h3 {
+    margin: 0;
+    font-family: var(--zen-font-secondary);
+    font-size: 1.3rem;
+}
+
+.close-poster {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--zen-spacing-sm);
+    border-radius: var(--zen-radius-sm);
+    transition: background var(--zen-duration-quick) ease;
+}
+
+.close-poster:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.poster-content {
+    padding: var(--zen-spacing-lg);
+    display: flex;
+    justify-content: center;
+    background: var(--zen-background);
+}
+
+#posterCanvas {
+    border: 1px solid var(--zen-divider);
+    border-radius: var(--zen-radius-md);
+    box-shadow: var(--zen-shadow-md);
+    max-width: 100%;
+    height: auto;
+}
+
+.poster-actions {
+    display: flex;
+    gap: var(--zen-spacing-md);
+    justify-content: center;
+    padding: var(--zen-spacing-lg);
+    background: var(--zen-surface);
+    border-top: 1px solid var(--zen-divider);
+}
+
+.download-btn, .share-btn {
+    padding: var(--zen-spacing-md) var(--zen-spacing-lg);
+    border: none;
+    border-radius: var(--zen-radius-md);
+    font-size: 1rem;
+    font-family: var(--zen-font-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--zen-duration-normal) ease;
+    display: flex;
+    align-items: center;
+    gap: var(--zen-spacing-sm);
+    box-shadow: var(--zen-shadow-sm);
+}
+
+.download-btn {
+    background: var(--zen-primary);
+    color: white;
+}
+
+.download-btn:hover {
+    background: var(--zen-primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--zen-shadow-md);
+}
+
+.share-btn {
+    background: var(--zen-secondary);
+    color: white;
+}
+
+.share-btn:hover {
+    background: var(--zen-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--zen-shadow-md);
+}
+
+.download-icon, .share-icon {
+    font-size: 1.2rem;
+}
+
+/* 响应式海报样式 */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .poster-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    .poster-container {
+        max-width: 95vw;
+        max-height: 98vh;
+    }
+
+    .poster-content {
+        padding: var(--zen-spacing-md);
+    }
+
+    #posterCanvas {
+        width: 100%;
+        height: auto;
+    }
+
+    .poster-actions {
+        flex-direction: column;
+        gap: var(--zen-spacing-sm);
+    }
+
+    .download-btn, .share-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .poster-header {
+        padding: var(--zen-spacing-md);
+    }
+
+    .poster-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .poster-content {
+        padding: var(--zen-spacing-sm);
+    }
+
+    .poster-actions {
+        padding: var(--zen-spacing-md);
+    }
+}
+
 /* 装饰性元素 */
 .container::before {
     content: '';

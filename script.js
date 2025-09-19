@@ -220,6 +220,24 @@ const progressSteps = {
     step3: document.getElementById('step3')
 };
 
+// 海报相关DOM元素
+const posterBtn = document.getElementById('posterBtn');
+const posterSection = document.getElementById('posterSection');
+const posterCanvas = document.getElementById('posterCanvas');
+const closePoster = document.getElementById('closePoster');
+const downloadBtn = document.getElementById('downloadBtn');
+const shareBtn = document.getElementById('shareBtn');
+const ctx = posterCanvas.getContext('2d');
+
+// 当前海报数据
+let currentPosterData = {
+    date: '',
+    mood: '',
+    fortune: '',
+    source: '',
+    application: ''
+};
+
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
     initEventListeners();
@@ -242,6 +260,28 @@ function initEventListeners() {
     resetBtn.addEventListener('click', function(e) {
         createInkRipple(this, e);
         resetFortune();
+    });
+
+    // 海报生成按钮
+    posterBtn.addEventListener('click', function(e) {
+        createInkRipple(this, e);
+        generatePoster();
+    });
+
+    // 关闭海报
+    closePoster.addEventListener('click', closePosterSection);
+
+    // 下载海报
+    downloadBtn.addEventListener('click', downloadPoster);
+
+    // 分享海报
+    shareBtn.addEventListener('click', sharePoster);
+
+    // 点击背景关闭海报
+    posterSection.addEventListener('click', function(e) {
+        if (e.target === posterSection) {
+            closePosterSection();
+        }
     });
 
     // 解释区域点击事件
@@ -390,6 +430,15 @@ function showFortune() {
     // 设置解释内容
     explanationContent.textContent = randomFortune.explanation;
     applicationContent.textContent = randomFortune.application;
+
+    // 保存海报数据
+    currentPosterData = {
+        date: getCurrentDate(),
+        mood: selectedMood,
+        fortune: randomFortune.text,
+        source: randomFortune.source,
+        application: randomFortune.application
+    };
 
     // 隐藏抽签区域，显示结果
     drawSection.style.display = 'none';
@@ -614,3 +663,291 @@ window.addEventListener('beforeunload', function(e) {
         e.returnValue = '';
     }
 });
+
+// 海报生成功能
+// 获取当前日期
+function getCurrentDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}年${month}月${day}日`;
+}
+
+// 生成海报
+function generatePoster() {
+    // 显示海报区域
+    posterSection.style.display = 'flex';
+
+    // 绘制海报
+    drawPoster();
+}
+
+// 绘制海报
+function drawPoster() {
+    const canvas = posterCanvas;
+    const ctx = canvas.getContext('2d');
+
+    // 清空画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 设置海报背景
+    drawPosterBackground(ctx, canvas);
+
+    // 绘制标题区域
+    drawPosterHeader(ctx, canvas);
+
+    // 绘制日期
+    drawPosterDate(ctx, canvas);
+
+    // 绘制心境
+    drawPosterMood(ctx, canvas);
+
+    // 绘制真言内容
+    drawPosterFortune(ctx, canvas);
+
+    // 绘制实践项
+    drawPosterPractice(ctx, canvas);
+
+    // 绘制底部装饰
+    drawPosterFooter(ctx, canvas);
+}
+
+// 绘制海报背景
+function drawPosterBackground(ctx, canvas) {
+    // 主背景
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#fafafa');
+    gradient.addColorStop(1, '#f0f0f0');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 添加装饰性圆形
+    ctx.globalAlpha = 0.05;
+    ctx.fillStyle = '#8b4513';
+    ctx.beginPath();
+    ctx.arc(canvas.width * 0.8, canvas.height * 0.2, 150, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(canvas.width * 0.2, canvas.height * 0.8, 100, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
+}
+
+// 绘制海报头部
+function drawPosterHeader(ctx, canvas) {
+    // Logo
+    ctx.fillStyle = '#8b4513';
+    ctx.font = 'bold 48px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('心', canvas.width / 2, 80);
+
+    // 标题
+    ctx.font = 'bold 36px 楷体, KaiTi, serif';
+    ctx.fillStyle = '#333';
+    ctx.fillText('心学日签', canvas.width / 2, 140);
+
+    // 副标题
+    ctx.font = '18px 宋体, SimSun, serif';
+    ctx.fillStyle = '#666';
+    ctx.fillText('每日一心学，日日有真言', canvas.width / 2, 170);
+}
+
+// 绘制日期
+function drawPosterDate(ctx, canvas) {
+    ctx.font = '20px 宋体, SimSun, serif';
+    ctx.fillStyle = '#8b4513';
+    ctx.textAlign = 'center';
+    ctx.fillText(currentPosterData.date, canvas.width / 2, 220);
+}
+
+// 绘制心境
+function drawPosterMood(ctx, canvas) {
+    // 心境标签背景
+    const moodText = `${currentPosterData.mood}之时`;
+    const textWidth = ctx.measureText(moodText).width;
+    const padding = 20;
+    const badgeWidth = textWidth + padding * 2;
+    const badgeHeight = 40;
+    const badgeX = (canvas.width - badgeWidth) / 2;
+    const badgeY = 240;
+
+    // 获取心境颜色
+    const moodColors = {
+        '平静': '#4a90e2',
+        '焦虑': '#ff7043',
+        '迷茫': '#7e57c2',
+        '欢喜': '#66bb6a',
+        '困惑': '#8d6e63',
+        '坚定': '#ef5350'
+    };
+
+    // 绘制圆角矩形背景
+    ctx.fillStyle = moodColors[currentPosterData.mood] || '#8b4513';
+    roundRect(ctx, badgeX, badgeY, badgeWidth, badgeHeight, 20);
+    ctx.fill();
+
+    // 绘制心境文字
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 18px 楷体, KaiTi, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(moodText, canvas.width / 2, badgeY + 26);
+}
+
+// 绘制真言内容
+function drawPosterFortune(ctx, canvas) {
+    // 主要真言
+    ctx.font = 'bold 28px 宋体, SimSun, serif';
+    ctx.fillStyle = '#1a1a1a';
+    ctx.textAlign = 'center';
+
+    // 处理长文本换行
+    const maxWidth = canvas.width - 100;
+    const lines = wrapText(ctx, currentPosterData.fortune, maxWidth);
+    const lineHeight = 40;
+    const startY = 320;
+
+    lines.forEach((line, index) => {
+        ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
+    });
+
+    // 出处
+    ctx.font = 'italic 16px 宋体, SimSun, serif';
+    ctx.fillStyle = '#666';
+    ctx.fillText(currentPosterData.source, canvas.width / 2, startY + lines.length * lineHeight + 20);
+}
+
+// 绘制海报实践项
+function drawPosterPractice(ctx, canvas) {
+    if (!currentPosterData.application) return;
+
+    // 实践项背景
+    const startY = 420;
+    const padding = 20;
+    const maxWidth = canvas.width - 120;
+    const titleHeight = 30;
+    const contentHeight = 80;
+
+    // 绘制实践项背景框
+    ctx.fillStyle = 'rgba(139, 69, 19, 0.08)';
+    roundRect(ctx, (canvas.width - maxWidth) / 2, startY, maxWidth, titleHeight + contentHeight, 8);
+    ctx.fill();
+
+    // 绘制实践项标题
+    ctx.font = 'bold 16px 宋体, SimSun, serif';
+    ctx.fillStyle = '#8b4513';
+    ctx.textAlign = 'center';
+    ctx.fillText('实践项', canvas.width / 2, startY + 22);
+
+    // 绘制实践项内容
+    ctx.font = '15px 宋体, SimSun, serif';
+    ctx.fillStyle = '#333';
+    const practiceLines = wrapText(ctx, currentPosterData.application, maxWidth - 40);
+    const lineHeight = 20;
+
+    practiceLines.forEach((line, index) => {
+        ctx.fillText(line, canvas.width / 2, startY + titleHeight + 20 + index * lineHeight);
+    });
+
+    // 绘制冥想建议
+    const meditationY = startY + titleHeight + contentHeight + 15;
+    ctx.font = '14px 宋体, SimSun, serif';
+    ctx.fillStyle = '#666';
+    ctx.fillText('🧘‍♀️ 建议：静心冥想3分钟，体会此实践', canvas.width / 2, meditationY);
+}
+
+// 绘制海报底部
+function drawPosterFooter(ctx, canvas) {
+    // 底部装饰线
+    ctx.strokeStyle = '#8b4513';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(canvas.width * 0.3, canvas.height - 60);
+    ctx.lineTo(canvas.width * 0.7, canvas.height - 60);
+    ctx.stroke();
+
+    // 底部文字
+    ctx.font = '14px 宋体, SimSun, serif';
+    ctx.fillStyle = '#999';
+    ctx.textAlign = 'center';
+    ctx.fillText('致良知 · 知行合一 · 格物致知', canvas.width / 2, canvas.height - 35);
+
+    // 二维码占位符（可以用实际二维码替换）
+    ctx.fillStyle = '#ddd';
+    ctx.fillRect(canvas.width - 80, canvas.height - 80, 60, 60);
+    ctx.fillStyle = '#666';
+    ctx.font = '10px Arial';
+    ctx.fillText('扫码体验', canvas.width - 50, canvas.height - 15);
+}
+
+// 圆角矩形辅助函数
+function roundRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+}
+
+// 文本换行函数
+function wrapText(ctx, text, maxWidth) {
+    const words = text.split('');
+    const lines = [];
+    let currentLine = '';
+
+    for (let i = 0; i < words.length; i++) {
+        const testLine = currentLine + words[i];
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > maxWidth && i > 0) {
+            lines.push(currentLine);
+            currentLine = words[i];
+        } else {
+            currentLine = testLine;
+        }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
+// 关闭海报区域
+function closePosterSection() {
+    posterSection.style.display = 'none';
+}
+
+// 下载海报
+function downloadPoster() {
+    const link = document.createElement('a');
+    const fileName = `心学日签_${currentPosterData.date}_${currentPosterData.mood}.png`;
+    link.download = fileName;
+    link.href = posterCanvas.toDataURL();
+    link.click();
+}
+
+// 分享海报
+function sharePoster() {
+    // 检查是否支持Web Share API
+    if (navigator.share) {
+        posterCanvas.toBlob(function(blob) {
+            const file = new File([blob], '心学日签.png', { type: 'image/png' });
+
+            navigator.share({
+                title: '心学日签',
+                text: `今日心境：${currentPosterData.mood}\n${currentPosterData.fortune}`,
+                files: [file]
+            }).catch(err => console.log('分享失败:', err));
+        });
+    } else {
+        // 不支持分享API时，提示用户下载
+        alert('您的浏览器不支持分享功能，请使用下载功能保存海报。');
+    }
+}
