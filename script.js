@@ -595,21 +595,41 @@ document.addEventListener('keydown', function(e) {
 // 添加触摸设备支持
 let touchStartY = 0;
 let touchEndY = 0;
+let touchStartX = 0;
+let touchStartTime = 0;
 
 document.addEventListener('touchstart', function(e) {
+    // 只在非输入元素上监听滑动
+    if (e.target.closest('button') || e.target.closest('.result-section') || e.target.closest('.poster-section')) {
+        return;
+    }
     touchStartY = e.changedTouches[0].screenY;
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartTime = Date.now();
 });
 
 document.addEventListener('touchend', function(e) {
+    // 只在非输入元素上处理滑动
+    if (e.target.closest('button') || e.target.closest('.result-section') || e.target.closest('.poster-section')) {
+        return;
+    }
     touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
 });
 
 function handleSwipe() {
-    if (touchEndY < touchStartY - 50) {
+    const touchEndTime = Date.now();
+    const touchDuration = touchEndTime - touchStartTime;
+    const touchDiffY = touchStartY - touchEndY;
+
+    // 增加滑动条件：快速垂直滑动
+    if (touchDiffY > 120 && touchDuration < 800) {
         // 向上滑动，如果显示结果则重置
         if (resultSection.style.display !== 'none') {
-            resetFortune();
+            // 添加确认机制，避免误触
+            if (confirm('确定要重新抽签吗？')) {
+                resetFortune();
+            }
         }
     }
 }
