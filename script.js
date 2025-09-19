@@ -1,4 +1,4 @@
-// 阳明心学真言数据库
+// 心学日签真言数据库
 const yangmingFortunes = {
     "平静": [
         {
