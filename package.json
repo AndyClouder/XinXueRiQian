@@ -1,0 +1,14 @@
+{
+  "name": "xin-xue-ri-qian",
+  "version": "1.0.0",
+  "description": "心学日签 - 阳明心学每日真言网站",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "echo 'Static site - ready for deployment'"
+  },
+  "keywords": ["心学", "阳明心学", "日签", "传统文化"],
+  "author": "AndyClouder",
+  "license": "MIT",
+  "devDependencies": {}
+}
