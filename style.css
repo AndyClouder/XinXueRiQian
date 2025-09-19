@@ -1,3 +1,58 @@
+/* 心学日签设计系统 */
+:root {
+    /* 品牌色彩系统 */
+    --zen-primary: #8b4513;
+    --zen-primary-light: #a0522d;
+    --zen-primary-dark: #654321;
+    --zen-secondary: #d2691e;
+    --zen-accent: #cd853f;
+
+    /* 心境专属渐变色 */
+    --mood-calm: linear-gradient(135deg, #4a90e2, #7cb342);
+    --mood-anxious: linear-gradient(135deg, #ff7043, #ffb74d);
+    --mood-confused: linear-gradient(135deg, #7e57c2, #42a5f5);
+    --mood-happy: linear-gradient(135deg, #66bb6a, #26c6da);
+    --mood-perplexed: linear-gradient(135deg, #8d6e63, #bcaaa4);
+    --mood-determined: linear-gradient(135deg, #ef5350, #ff7043);
+
+    /* 中性色彩 */
+    --zen-surface: #fafafa;
+    --zen-background: #f8f8f8;
+    --zen-text-primary: #1a1a1a;
+    --zen-text-secondary: #666;
+    --zen-text-tertiary: #999;
+    --zen-divider: #e0e0e0;
+
+    /* 阴影系统 */
+    --zen-shadow-sm: 0 2px 8px rgba(139, 69, 19, 0.1);
+    --zen-shadow-md: 0 8px 32px rgba(139, 69, 19, 0.15);
+    --zen-shadow-lg: 0 16px 64px rgba(139, 69, 19, 0.2);
+
+    /* 间距系统 */
+    --zen-spacing-xs: 4px;
+    --zen-spacing-sm: 8px;
+    --zen-spacing-md: 16px;
+    --zen-spacing-lg: 24px;
+    --zen-spacing-xl: 32px;
+    --zen-spacing-xxl: 48px;
+
+    /* 动画时长 */
+    --zen-duration-quick: 150ms;
+    --zen-duration-normal: 300ms;
+    --zen-duration-slow: 500ms;
+
+    /* 字体系统 */
+    --zen-font-primary: '宋体', 'SimSun', serif;
+    --zen-font-secondary: '楷体', 'KaiTi', serif;
+    --zen-font-mono: 'Consolas', 'Monaco', monospace;
+
+    /* 圆角 */
+    --zen-radius-sm: 4px;
+    --zen-radius-md: 8px;
+    --zen-radius-lg: 16px;
+    --zen-radius-full: 50%;
+}
+
 /* 重置样式 */
 * {
     margin: 0;
@@ -6,11 +61,28 @@
 }
 
 body {
-    font-family: '宋体', 'SimSun', '楷体', 'KaiTi', serif;
-    background-color: #f8f8f8;
-    color: #333;
+    font-family: var(--zen-font-primary);
+    background-color: var(--zen-background);
+    color: var(--zen-text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* 品牌背景装饰 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="90" font-family="serif" font-size="80" fill="rgba(139, 69, 19, 0.02)">心</text></svg>');
+    pointer-events: none;
+    z-index: -1;
 }
 
 .container {
@@ -25,23 +97,152 @@ body {
 /* 头部样式 */
 .header {
     text-align: center;
-    padding: 40px 0;
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 40px;
+    padding: var(--zen-spacing-xl) 0;
+    border-bottom: 1px solid var(--zen-divider);
+    margin-bottom: var(--zen-spacing-xl);
+    position: relative;
 }
 
-.title {
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--zen-spacing-md);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--zen-spacing-md);
+    position: relative;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    background: var(--mood-calm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    position: relative;
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+.logo-text {
     font-size: 2.5rem;
     font-weight: normal;
-    color: #1a1a1a;
-    margin-bottom: 10px;
+    color: var(--zen-text-primary);
     letter-spacing: 2px;
+    font-family: var(--zen-font-secondary);
+    position: relative;
+}
+
+.logo::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--zen-primary);
+    border-radius: var(--zen-radius-full);
+    opacity: 0.8;
 }
 
 .subtitle {
     font-size: 1rem;
-    color: #666;
+    color: var(--zen-text-secondary);
     font-weight: normal;
+    font-family: var(--zen-font-secondary);
+    letter-spacing: 1px;
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+/* 墨水扩散效果 */
+.ink-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(139, 69, 19, 0.3);
+    animation: inkRipple 0.8s ease-out;
+    pointer-events: none;
+}
+
+@keyframes inkRipple {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+    }
+    100% {
+        width: 200px;
+        height: 200px;
+        opacity: 0;
+    }
+}
+
+/* 毛笔书写效果 */
+.brush-writing {
+    overflow: hidden;
+    position: relative;
+}
+
+.brush-writing::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.8) 50%,
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: brushWrite 2s ease-in-out;
+}
+
+@keyframes brushWrite {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* 真言文字特殊效果 */
+.fortune-text {
+    position: relative;
+    display: inline-block;
+}
+
+.fortune-text.writing {
+    animation: textReveal 1.5s ease-out forwards;
+}
+
+@keyframes textReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(10px);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translateY(-5px);
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
 }
 
 /* 主要内容区域 */
@@ -68,36 +269,103 @@ body {
 .mood-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: var(--zen-spacing-md);
     justify-content: center;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
 .mood-btn {
-    padding: 12px 24px;
-    border: 1px solid #ccc;
-    background: white;
-    color: #333;
-    border-radius: 4px;
+    padding: var(--zen-spacing-md) var(--zen-spacing-lg);
+    border: 2px solid var(--zen-divider);
+    background: var(--zen-surface);
+    color: var(--zen-text-primary);
+    border-radius: var(--zen-radius-md);
     cursor: pointer;
-    font-family: inherit;
+    font-family: var(--zen-font-secondary);
     font-size: 1rem;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    transition: all var(--zen-duration-normal) ease;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--zen-shadow-sm);
+}
+
+.mood-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--zen-primary);
+    transition: left var(--zen-duration-normal) ease;
+    z-index: 0;
 }
 
 .mood-btn:hover {
-    border-color: #8b4513;
-    color: #8b4513;
     transform: translateY(-2px);
+    box-shadow: var(--zen-shadow-md);
+    border-color: var(--zen-primary);
+}
+
+.mood-btn:hover::before {
+    left: 0;
+}
+
+.mood-btn > span {
+    position: relative;
+    z-index: 1;
+    transition: color var(--zen-duration-normal) ease;
+}
+
+.mood-btn:hover > span {
+    color: white;
 }
 
 .mood-btn.active {
-    background: #8b4513;
+    background: var(--zen-primary);
     color: white;
-    border-color: #8b4513;
+    border-color: var(--zen-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--zen-shadow-md);
+}
+
+.mood-btn.active::before {
+    left: 0;
+}
+
+/* 心境专属色彩 */
+.mood-btn[data-mood="平静"] {
+    --mood-gradient: var(--mood-calm);
+}
+
+.mood-btn[data-mood="焦虑"] {
+    --mood-gradient: var(--mood-anxious);
+}
+
+.mood-btn[data-mood="迷茫"] {
+    --mood-gradient: var(--mood-confused);
+}
+
+.mood-btn[data-mood="欢喜"] {
+    --mood-gradient: var(--mood-happy);
+}
+
+.mood-btn[data-mood="困惑"] {
+    --mood-gradient: var(--mood-perplexed);
+}
+
+.mood-btn[data-mood="坚定"] {
+    --mood-gradient: var(--mood-determined);
+}
+
+.mood-btn::before {
+    background: var(--mood-gradient);
+}
+
+.mood-btn.active {
+    background: var(--mood-gradient);
 }
 
 /* 抽签区域 */
@@ -175,41 +443,79 @@ body {
 }
 
 .draw-btn {
-    padding: 15px 40px;
-    background: #8b4513;
+    padding: var(--zen-spacing-lg) var(--zen-spacing-xl);
+    background: var(--zen-primary);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--zen-radius-md);
     font-size: 1.1rem;
-    font-family: inherit;
+    font-family: var(--zen-font-secondary);
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--zen-duration-normal) ease;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--zen-shadow-md);
+    letter-spacing: 1px;
+}
+
+.draw-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--zen-radius-full);
+    transform: translate(-50%, -50%);
+    transition: width var(--zen-duration-normal) ease, height var(--zen-duration-normal) ease;
 }
 
 .draw-btn:hover:not(:disabled) {
-    background: #a0522d;
-    transform: translateY(-2px);
+    background: var(--zen-primary-light);
+    transform: translateY(-3px);
+    box-shadow: var(--zen-shadow-lg);
+}
+
+.draw-btn:hover:not(:disabled)::before {
+    width: 300px;
+    height: 300px;
 }
 
 .draw-btn:disabled {
-    background: #ccc;
+    background: var(--zen-text-tertiary);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 .draw-btn:not(:disabled):active {
-    transform: translateY(0);
+    transform: translateY(-1px);
+    box-shadow: var(--zen-shadow-md);
 }
 
 /* 结果展示区域 */
 .result-section {
     text-align: center;
-    padding: 40px 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: var(--zen-spacing-xl) var(--zen-spacing-lg);
+    background: var(--zen-surface);
+    border-radius: var(--zen-radius-lg);
+    box-shadow: var(--zen-shadow-lg);
     animation: fadeIn 0.8s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--zen-primary);
+    opacity: 0.8;
 }
 
 @keyframes fadeIn {
@@ -226,12 +532,17 @@ body {
 
 .mood-indicator {
     font-size: 1.1rem;
-    color: #8b4513;
-    margin-bottom: 20px;
-    padding: 8px 16px;
-    background: #f5f5f5;
-    border-radius: 20px;
+    color: white;
+    margin-bottom: var(--zen-spacing-lg);
+    padding: var(--zen-spacing-sm) var(--zen-spacing-lg);
+    background: var(--zen-primary);
+    border-radius: var(--zen-radius-full);
     display: inline-block;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: var(--zen-shadow-sm);
+    position: relative;
+    z-index: 1;
 }
 
 .fortune-text {

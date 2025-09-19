@@ -229,7 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function initEventListeners() {
     // 心情选择按钮
     moodButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            createInkRipple(this, e);
             selectMood(this);
         });
     });
@@ -238,7 +239,10 @@ function initEventListeners() {
     drawBtn.addEventListener('click', drawFortune);
 
     // 重置按钮
-    resetBtn.addEventListener('click', resetFortune);
+    resetBtn.addEventListener('click', function(e) {
+        createInkRipple(this, e);
+        resetFortune();
+    });
 
     // 解释区域点击事件
     addExplanationClickHandler();
@@ -247,12 +251,25 @@ function initEventListeners() {
     fortuneText.addEventListener('mouseenter', function() {
         if (explanationSection.style.display === 'none') {
             this.style.transform = 'scale(1.02)';
-            this.style.transition = 'transform 0.2s ease';
+            this.style.transition = 'transform var(--zen-duration-quick) ease';
         }
     });
 
     fortuneText.addEventListener('mouseleave', function() {
         this.style.transform = 'scale(1)';
+    });
+
+    // 为心境按钮添加悬停效果
+    moodButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.05)';
+        });
+
+        button.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('active')) {
+                this.style.transform = 'translateY(0) scale(1)';
+            }
+        });
     });
 }
 
@@ -265,6 +282,9 @@ function selectMood(button) {
     button.classList.add('active');
     selectedMood = button.dataset.mood;
 
+    // 更新Logo色彩
+    updateLogoColor(selectedMood);
+
     // 启用抽签按钮
     drawBtn.disabled = false;
     drawBtn.textContent = '开始抽签';
@@ -272,6 +292,26 @@ function selectMood(button) {
     // 隐藏结果区域
     resultSection.style.display = 'none';
     drawSection.style.display = 'block';
+}
+
+// 更新Logo色彩
+function updateLogoColor(mood) {
+    const logoIcon = document.querySelector('.logo-icon');
+    const moodColors = {
+        '平静': 'var(--mood-calm)',
+        '焦虑': 'var(--mood-anxious)',
+        '迷茫': 'var(--mood-confused)',
+        '欢喜': 'var(--mood-happy)',
+        '困惑': 'var(--mood-perplexed)',
+        '坚定': 'var(--mood-determined)'
+    };
+
+    if (logoIcon && moodColors[mood]) {
+        logoIcon.style.background = moodColors[mood];
+        logoIcon.style.webkitBackgroundClip = 'text';
+        logoIcon.style.webkitTextFillColor = 'transparent';
+        logoIcon.style.backgroundClip = 'text';
+    }
 }
 
 // 抽签功能
@@ -289,6 +329,51 @@ function drawFortune() {
     setTimeout(() => {
         showFortune();
     }, 2000);
+}
+
+// 创建墨水扩散效果
+function createInkRipple(element, event) {
+    const ripple = document.createElement('div');
+    ripple.className = 'ink-ripple';
+
+    const rect = element.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+
+    let x, y;
+    if (event && event.type === 'click') {
+        x = event.clientX - rect.left;
+        y = event.clientY - rect.top;
+    } else {
+        x = rect.width / 2;
+        y = rect.height / 2;
+    }
+
+    ripple.style.width = size + 'px';
+    ripple.style.height = size + 'px';
+    ripple.style.left = (x - size / 2) + 'px';
+    ripple.style.top = (y - size / 2) + 'px';
+
+    // 根据按钮类型设置墨水颜色
+    if (element.classList.contains('mood-btn') && element.dataset.mood) {
+        const moodColors = {
+            '平静': 'rgba(74, 144, 226, 0.4)',
+            '焦虑': 'rgba(255, 112, 67, 0.4)',
+            '迷茫': 'rgba(126, 87, 194, 0.4)',
+            '欢喜': 'rgba(102, 187, 106, 0.4)',
+            '困惑': 'rgba(141, 110, 99, 0.4)',
+            '坚定': 'rgba(239, 83, 80, 0.4)'
+        };
+        ripple.style.background = moodColors[element.dataset.mood] || 'rgba(139, 69, 19, 0.3)';
+    }
+
+    element.style.position = 'relative';
+    element.style.overflow = 'hidden';
+    element.appendChild(ripple);
+
+    // 动画结束后移除元素
+    setTimeout(() => {
+        ripple.remove();
+    }, 800);
 }
 
 // 显示结果
@@ -314,6 +399,9 @@ function showFortune() {
     resetProgress();
     explanationSection.style.display = 'none';
     applicationSection.style.display = 'none';
+
+    // 添加毛笔书写效果
+    fortuneText.classList.add('writing', 'brush-writing');
 
     // 添加可点击提示
     addClickHint();
